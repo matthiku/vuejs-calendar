@@ -17,6 +17,9 @@
           placeholder="add event text"
         >
     </div>
+
+    <p v-if="error" style="color: red">{{ error }}</p>
+
     <div class="buttons">
       <button
           @click="create"
@@ -24,7 +27,7 @@
         >Create</button>
     </div>
 
-    <button id="close-button" @click="close">&#10005</button>
+    <button id="close-button" @click="close">&#10005;</button>
   </div>
 </template>
 
@@ -52,25 +55,29 @@ export default {
       return this.$store.state.eventFormPosX + 'px'
     },
     active () {
-      return this.$store.state.eventFormActive
+      let form = this.$store.state.eventFormActive
+      if (!form) this.newEvent = ''
+      return form
     },
     day () {
       return this.$store.state.eventFormDay
+    },
+    error () {
+      return this.$store.state.error
     }
+
   },
 
   methods: {
     close () {
-      this.newEvent = ''
       this.$store.commit('setEventFormActive', false)
     },
     create () {
       if (this.newEvent.length) {
-        this.$store.commit('addEvent', {
+        this.$store.dispatch('addEvent', {
           description: this.newEvent,
           date: this.day
         })
-        this.close()
       }
     }
   }

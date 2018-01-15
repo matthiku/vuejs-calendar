@@ -9,6 +9,7 @@ import Axios from 'axios'
 
 export default new Vuex.Store( {
   state: {
+    error: '',
     currentYear: 2018,
     currentMonth: 1,
     eventFormPosX: 0,
@@ -19,6 +20,9 @@ export default new Vuex.Store( {
   },
 
   mutations: {
+    setError (state, payload) {
+      state.error = payload
+    },
     setCurrentYear (state, payload) {
       state.currentYear = payload
     },
@@ -37,13 +41,25 @@ export default new Vuex.Store( {
     },
     addEvent (state, payload) {
       state.events.push(payload)
-      Axios.post('/add_event', payload)
     }
   },
 
   actions: {
     addEvent (context, payload) {
-      console.log(context)
+      Axios.post('/add_event', payload)
+      .then((resp) => {
+        if (resp.status === 200) {
+          context.commit('addEvent', payload)
+          context.commit('setEventFormActive', false)
+        } else {
+          console.log(resp)
+          context.commit('setError', 'error when trying to upload event! ' + resp.status)
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+        context.commit('setError', 'error when trying to upload event!')
+      })
     }
   }
 })
