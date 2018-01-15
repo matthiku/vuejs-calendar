@@ -23,7 +23,7 @@
     <div class="buttons">
       <button
           @click="create"
-          :disabled="newEvent.length === 0"
+          v-show="newEvent.length > 0"
         >Create</button>
     </div>
 
