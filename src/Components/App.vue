@@ -8,6 +8,8 @@
         <current-month></current-month>
       </div>
 
+      <event-form></event-form>
+
 
     </div>
 
@@ -32,9 +34,11 @@
 <script>
 import CalendarDay from './CalendarDay.vue'
 import CurrentMonth from './CurrentMonth.vue'
+import EventForm from './EventForm.vue'
 
 export default {
   components: {
+    EventForm,
     CurrentMonth,
     CalendarDay
   },
