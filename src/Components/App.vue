@@ -1,12 +1,17 @@
 <template>
   <div>
+
     <div id="header">
+
       <div>
+        <img src="../assets/logo.png" alt="logo">
         <h1>Vue.js Calendar</h1>
       </div>
+
       <div>
         <current-month></current-month>
       </div>
+
 
       <event-form></event-form>
 
