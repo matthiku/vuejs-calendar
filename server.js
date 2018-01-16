@@ -9,13 +9,19 @@ const moment = require('moment-timezone');
 moment.tz.setDefault("UTC");
 const serialize = require('serialize-javascript')
 
+let renderer;
+
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
-const events = [
+if (process.env.NODE_ENV === 'production') {
+  let bundle = fs.readFileSync('./dist/node.bundle.js', 'utf8')
+  renderer = require('vue-server-renderer').createBundleRenderer(bundle)
+  app.use('/dist', express.static(path.join(__dirname, 'dist')));
+}
+
+let events = [
   { description: 'random event', date: '2018-01-25T00:00:00.000Z' }
 ];
-
-let renderer;
 
 app.get('/', (req, res) => {
   let template = fs.readFileSync(path.resolve('./index.html'), 'utf-8');
